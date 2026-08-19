@@ -21,13 +21,11 @@ class Solution {
             slow=slow.next;
             fast=fast.next.next;
         }
-        if(fast!=null){
-            slow=slow.next;
-        }
 
 
         // Now reverse the right side so that traversing gets easy..
-        ListNode curr=slow;
+        ListNode mid=slow;
+        ListNode curr=mid;
         ListNode prev=null;
         ListNode next;
         while(curr!=null){
