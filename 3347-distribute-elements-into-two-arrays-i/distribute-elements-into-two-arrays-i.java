@@ -17,10 +17,9 @@ class Solution {
             }
         }
         al1.addAll(al2);
-        int[] result=new int[n];
         for(int i=0;i<n;i++){
-            result[i]=al1.get(i);
+            nums[i]=al1.get(i);
         }
-        return result;
+        return nums;
     }
 }
