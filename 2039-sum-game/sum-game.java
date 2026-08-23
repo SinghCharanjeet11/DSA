@@ -1,20 +1,37 @@
 class Solution {
-    private static double getExpected(char c){
-        return c=='?' ? 4.5 : c-'0';
-    }
     public boolean sumGame(String num) {
-        int n=num.length();
-        double ans=0.0;
+        int n = num.length();
 
-        // Left Side
-        for(int i=0;i<n/2;++i){
-            ans+= getExpected(num.charAt(i));
+        int leftSum = 0;
+        int rightSum = 0;
+
+        int leftQ = 0;
+        int rightQ = 0;
+
+        // Left half
+        for (int i = 0; i < n / 2; i++) {
+            if (num.charAt(i) == '?') {
+                leftQ++;
+            } else {
+                leftSum += num.charAt(i) - '0';
+            }
         }
 
-        // Right Side
-        for(int i=n/2;i<n;++i){
-            ans-= getExpected(num.charAt(i));
+        // Right half
+        for (int i = n / 2; i < n; i++) {
+            if (num.charAt(i) == '?') {
+                rightQ++;
+            } else {
+                rightSum += num.charAt(i) - '0';
+            }
         }
-        return ans != 0.0;
+
+        // Odd number of '?' -> Alice wins
+        if ((leftQ + rightQ) % 2 == 1) {
+            return true;
+        }
+
+        // Check whether Bob can make both sums equal
+        return leftSum - rightSum != 9 * (rightQ - leftQ) / 2;
     }
 }
