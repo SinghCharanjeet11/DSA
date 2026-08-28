@@ -1,50 +1,62 @@
 class Solution {
+    private static boolean canMakeGreater(int[] count, String target, int start){
+        // Create the largest possible string from left characters
+
+        StringBuilder largest=new StringBuilder();
+        for(int c=25;c>=0;c--){
+            while(count[c]>0){
+                largest.append((char)(c+'a'));
+                count[c]--;
+            }
+        }
+        // Restoring the count of each character that is  left so that it can be used for further usecases..
+        for(int i=0;i<largest.length();i++){
+            count[largest.charAt(i)-'a']++;
+        }
+        String targetLeft= target.substring(start); //This is the left portion of the target substring
+
+        return largest.toString().compareTo(targetLeft)>0;
+    }
     public String lexGreaterPermutation(String s, String target) {
-        int[] count = new int[26];
-        for (char ch : s.toCharArray()) {
-            count[ch - 'a']++;
+        int[] count=new int[26];
+        for(char c: s.toCharArray()){
+            count[c-'a']++;
         }
+        StringBuilder result=new StringBuilder();
+        int n=s.length();
 
-        int n = s.length();
-        int matched = 0;
+        for(int i=0;i<n;i++){
+            int targetChar=target.charAt(i)-'a';
 
-        while (matched < n && count[target.charAt(matched) - 'a'] > 0) {
-            count[target.charAt(matched) - 'a']--;
-            matched++;
-        }
+            // Case 1-> When there is a possibility of getting the character
 
-        int start = matched < n ? matched : n - 1;
+            if(count[targetChar]>0){
+                count[targetChar]--;
 
-        for (int i = start; i >= 0; i--) {
-            if (i < matched) {
-                count[target.charAt(i) - 'a']++;
-            }
-
-            int bigger = -1;
-            for (int ch = target.charAt(i) - 'a' + 1; ch < 26; ch++) {
-                if (count[ch] > 0) {
-                    bigger = ch;
-                    break;
+                if(canMakeGreater(count, target, i+1)){
+                    result.append(target.charAt(i));
+                    continue;
                 }
+                count[targetChar]++;
             }
 
-            if (bigger != -1) {
-                count[bigger]--;
+            // Case 2->Now we have no character , so we will create the smallest possible greater string
 
-                StringBuilder answer = new StringBuilder(target.substring(0, i));
-
-                answer.append((char) ('a' + bigger));
-
-                for (int ch = 0; ch < 26; ch++) {
-                    while (count[ch]-- > 0) {
-                        answer.append((char) ('a' + ch));
+            for(int c=targetChar+1;c<26;c++){
+                if(count[c]>0){
+                    result.append((char)(c+'a'));
+                    count[c]--;
+                    for(int k=0;k<26;k++){
+                        while(count[k]>0){
+                            result.append((char)(k+'a'));
+                            count[k]--;
+                        }
                     }
+                    return result.toString();
                 }
-
-                return answer.toString();
             }
+            return "";
         }
-
         return "";
     }
 }
