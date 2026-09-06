@@ -1,14 +1,15 @@
 class Solution {
-    private static void allComb(String digits, String[]words, int idx, String curr, List<String> result){
+    private static void allComb(String digits, String[]words, int idx, StringBuilder curr, List<String> result){
         if(idx==digits.length()){
-            result.add(curr);
+            result.add(curr.toString());
             return;
         }
         String s=words[digits.charAt(idx)-'0'];
         for(int i=0;i<s.length();i++){
-            allComb(digits, words, idx+1, curr+s.charAt(i), result);
+            curr.append(s.charAt(i));
+            allComb(digits, words, idx+1, curr, result);
+            curr.deleteCharAt(curr.length()-1);
         }
-
 
     }
     public List<String> letterCombinations(String digits) {
@@ -17,7 +18,8 @@ class Solution {
         if(digits.length()==0){
             return result;
         }
-        allComb(digits, words, 0, "", result);
+        StringBuilder sb= new StringBuilder();
+        allComb(digits, words, 0, sb, result);
         return result;
     }
 }
