@@ -13,10 +13,9 @@ class Solution {
             } else if (ch == ')') {
                 curr.reverse();
 
-                StringBuilder previous = result.pop();
-                previous.append(curr);
-
-                curr = previous;
+                StringBuilder prev = result.pop();
+                prev.append(curr);
+                curr = prev;
 
             } else {
                 curr.append(ch);
