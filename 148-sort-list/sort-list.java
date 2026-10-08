@@ -9,60 +9,55 @@
  * }
  */
 class Solution {
-    private static ListNode middle(ListNode head){
-        if(head==null || head.next==null){
+    private static ListNode mergeSort(ListNode head){
+        // First we will calculate the middle value
+        if (head == null || head.next == null) {
             return head;
         }
         ListNode slow=head;
         ListNode fast=head.next;
         while(fast!=null && fast.next!=null){
-            fast=fast.next.next;
             slow=slow.next;
+            fast=fast.next.next;
         }
-        return slow;
+        ListNode mid=slow.next;
+        slow.next=null;
+        // Now we have to split the array to peerform the merge operation
+        ListNode left=mergeSort(head);
+        ListNode right=mergeSort(mid);
+        return merge(left, right);
+
     }
-    private static ListNode merge(ListNode left,ListNode right){
-        ListNode result=new ListNode(-1);
-        ListNode temp=result;
+    private static ListNode merge(ListNode left, ListNode right){
+        ListNode result= new ListNode(-1);
+        ListNode curr= result;
         while(left!=null && right!=null){
-            if(left.val<=right.val){
-                temp.next=left;
+            if(left.val<right.val){
+                curr.next=left;
                 left=left.next;
             }
             else{
-                temp.next=right;
+                curr.next=right;
                 right=right.next;
             }
-            temp=temp.next;
+            curr=curr.next;
         }
-        if(left!=null){
-            temp.next=left;
+        while(left!=null){
+            curr.next=left;
+            left=left.next;
+            curr=curr.next;
         }
-        else{
-            temp.next=right;
+        while(right!=null){
+            curr.next=right;
+            right=right.next;
+            curr=curr.next;
         }
         return result.next;
-
-    }
-    private static ListNode mergeSort(ListNode head){
-        if(head==null || head.next==null){
-            return head;
-        }
-        ListNode mid=middle(head);
-        ListNode right = mid.next;
-        mid.next = null;
-        ListNode left = head;
-
-        // Recursively sort both halves
-        left = mergeSort(left);
-        right = mergeSort(right);
-        return merge(left,right);
     }
     public ListNode sortList(ListNode head) {
         if(head==null || head.next==null){
             return head;
         }
         return mergeSort(head);
-        
     }
 }
