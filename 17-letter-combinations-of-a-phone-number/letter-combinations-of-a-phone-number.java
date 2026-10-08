@@ -1,14 +1,14 @@
 class Solution {
-    private static void allComb(String digits, String[]words, int idx, StringBuilder curr, List<String> result){
+    private static void allComb(String digits, String[] words, int idx, StringBuilder sb, List<String> result){
         if(idx==digits.length()){
-            result.add(curr.toString());
+            result.add(sb.toString());
             return;
         }
-        String s=words[digits.charAt(idx)-'0'];
-        for(int i=0;i<s.length();i++){
-            curr.append(s.charAt(i));
-            allComb(digits, words, idx+1, curr, result);
-            curr.deleteCharAt(curr.length()-1);
+        String s= words[digits.charAt(idx)-'0'];
+        for(int k=0; k<s.length(); k++){
+            sb.append(s.charAt(k));
+            allComb(digits, words, idx+1, sb, result);
+            sb.deleteCharAt(sb.length()-1);
         }
 
     }
