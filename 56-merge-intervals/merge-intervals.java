@@ -8,21 +8,12 @@ class Solution {
         int n= intervals.length;
         
         for(int i=0; i<n; i++){
-            if(!result.isEmpty() && (intervals[i][1] <= result.get(result.size()-1)[1])){
-                continue;
+            if(result.isEmpty() || (intervals[i][0] > result.get(result.size()-1)[1])){
+                result.add(intervals[i]);
             }
-            int start= intervals[i][0];
-            int end= intervals[i][1];
-            
-            for(int j= i+1; j<n; j++){
-                if(intervals[j][0]<=end){
-                    end= Math.max(end, intervals[j][1]);
-                }
-                else{
-                    break;
-                }
+            else{
+                result.get(result.size()-1)[1]= Math.max(intervals[i][1], result.get(result.size()-1)[1]);
             }
-            result.add(new int[]{start,end});
         }
         return result.toArray(new int[result.size()][]);
     }
