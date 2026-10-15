@@ -1,28 +1,33 @@
 class Solution {
-
-    private static boolean dfs(char[][] board, String word, int i, int j, int idx){
-        if(idx==word.length()){
+    private static boolean solve(char[][] board, int i, int j, String word, int idx){
+        int n=board.length;
+        int m=board[0].length;
+        if (idx == word.length()) {
             return true;
         }
-        if(i<0 || j<0 || i>=board.length || j>= board[0].length || board[i][j]!= word.charAt(idx)){
+        if(i<0 || i>=n || j<0 || j>=m || board[i][j]!= word.charAt(idx)){
             return false;
         }
         char temp= board[i][j];
         board[i][j]='#';
 
-        boolean found= dfs(board, word, i+1, j, idx+1) || dfs(board, word, i-1, j, idx+1) ||
-                                dfs(board, word, i, j+1, idx+1) ||dfs(board, word, i, j-1, idx+1);
-                    
+        boolean found= solve(board, i+1, j, word, idx+1) || solve(board, i-1, j, word, idx+1) || 
+        solve(board, i, j-1, word, idx+1) || solve(board, i, j+1, word, idx+1);
+
         board[i][j]=temp;
+
         return found;
+
+
     }
     public boolean exist(char[][] board, String word) {
-        int rows= board.length;
-        int cols= board[0].length;
 
-        for(int i=0; i<rows; i++){
-            for(int j=0; j<cols; j++){
-                if(dfs(board, word, i, j, 0)){
+        int m= board.length;
+        int n=board[0].length;
+
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(solve(board, i, j, word, 0)){
                     return true;
                 }
             }
